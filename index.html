@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Full Throttle Labs</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- Using online bootstrap 4 CDN -->
+
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+  <!-- This is offline bootstrap CDN in css and js folder to see project offline -->
+
+  <!-- <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <script src="js/jquery.min.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/bootstrap.min.js"></script> -->
+
+<style>
+
+body{
+  background:#f5f5cd;
+}
+.name{
+  font-family: Roboto;
+}
+.bold{
+  font-family: san-serif;
+  font-weight:bold;
+}
+.ans{
+  font-family: Lato;
+}
+.m_name {
+    font-family: Lato;
+    font-size: 25px;
+    font-weight: bold;
+    color: #1b7fd4;
+}
+th{
+  font-family:Arial;
+  font-weight:bold;
+  font-size: 20px;
+}
+#exampleModalLabel{
+    font-family: Lato;
+    font-size:25px;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container" id="member">
+</div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="datamodal" tabindex="-1" role="dialog" aria-labelledby="datamodalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Activity Periods</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body" id="mydatamodalbody">
+
+                  </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+<!-- modal ended -->
+
+
+<script>
+
+var a = [];
+
+$.ajax({
+  'url': '/ftlabs_task/Test-JSON.json',
+  'method': 'POST',
+  'data': {},
+  success: function(result){
+    // console.log(result);
+    var value = [];
+
+    a = JSON.parse(result);
+
+    for(let x in a['members']){
+  // console.log(a[x]);
+
+
+
+        $("#member").append(`
+          <div class="row  my-4">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="card">
+                  <form>
+                    <div class="row p-4">
+                      <div class="col-md-12">
+                        <h3>
+                          <span class="d-flex">
+                            <span class="name">Member Name:</span>
+                            <span class="ml-4 mt-1 m_name">${a['members'][x]['real_name']}</span>
+                          </span>
+                        </h3><hr>
+                        <h5>
+                          <span class="d-flex">
+                            <span class="bold">Member ID: </span>
+                            <span class="ml-2 ans">${a['members'][x]['id']}</span>
+                          </span>
+                        </h5>
+                        <span class="d-flex">
+                          <span class="bold">Address: </span>
+                          <span class="ml-2 ans">${a['members'][x]['tz']}</span>
+                        </span>
+                      </div>
+                    </div>
+
+                    <button type="button" class="btn btn-warning mb-4 ml-4 text-center" onclick="mydatamodal('${x}')">
+                      Activity Status
+                    </button>
+
+                  </form>
+                </div>
+
+              </div>
+              <div class="col-md-3"></div>
+            </div>
+          `);
+      }
+
+
+  },
+  error:function(error){
+    console.log(error);
+  }
+});
+
+
+function mydatamodal(mid){
+
+// console.log(a);
+
+  var activity_periods = '';
+  for(let y in a['members'][mid]['activity_periods']){
+    activity_periods = activity_periods + `<tr><td class="bold">${parseInt(y)}</td><td class="bold">${a['members'][mid]['activity_periods'][y]['start_time']}</td><td class="bold">${a['members'][mid]['activity_periods'][y]['end_time']}</tr>`;
+  }
+
+  $("#mydatamodalbody").html(`
+            <table class="table table-responsive">
+              <thead>
+                <tr>
+                  <th>S.NO</th>
+                  <th colspna="3">Start Time</th>
+                  <th colspan="3">End Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  ${activity_periods}
+                </tr>
+              </tbody>
+            </table>
+
+    `);
+
+    $("#datamodal").modal('show');
+}
+
+</script>
+
+</body>
+</html>

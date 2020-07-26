@@ -14,6 +14,6 @@ Bootstrap 4, HTML, CSS, JSON, Jquery
 
 # Screenshot
 
-![alt text](https://github.com/Bharti-Parmar/JSON-Data-Using-Ajax-Jquery/blob/master/rsz_screenshot_from_2020-07-26_18-25-22.png) 
+![alt text](https://github.com/Bharti-Parmar/ft_labs/blob/master/image1.png) 
 
-![alt text](https://github.com/Bharti-Parmar/JSON-Data-Using-Ajax-Jquery/blob/master/rsz_screenshot_from_2020-07-26_18-25-34.png)
+![alt text](https://github.com/Bharti-Parmar/ft_labs/blob/master/image2.png)
